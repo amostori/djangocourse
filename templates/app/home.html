@@ -6,6 +6,9 @@
 {% block base_content %}
 <main class="max-w-7xl mx-auto mt-10 p-2 md:p-4 lg:p-10">
     <H1 class="title mb-4">Welcome</H1>
+    <button hx-post="/clicked" hx-swap="outerHTML">
+        Click Me
+      </button>
     <p class="text-xl mb-4">You have created: {{ user.articles.count | intcomma}}
          article{{ user.articles.count|pluralize }} and
            {{user.written_words | intcomma}} 
@@ -13,13 +16,19 @@
     <a class="button primary inline-block mb-6  w-full sm:w-auto text-center" href="{% url 'article_create' %}">Start new article</a>
     <h2 class="subtitle mb-6">Your latest articles</h2>
         <form method="GET" class="flex flex-col mb-6 sm:flex-row gap-3 form-field">
-            <input  type="search" name="search" placeholder="Search" value="{{ request.GET.search }}" class="text-black shadow-sm focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm border-gray-300 rounded-md">
+            <input  type="search" 
+            name="search" placeholder="Search" 
+            value="{{ request.GET.search }}" class="text-black shadow-sm focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm border-gray-300 rounded-md"
+            hx-get="{% url 'home' %}" hx-trigger="input changed delay:500ms, search"
+            hx-target="#articles-results"
+            hx-select="#articles-results">
             <button type="submit" class="flex gap-1 button secondary items-center justify-center">
                 {% include "svgs/magnifier.svg" with class="w-6 h-6 mr-2" %}
                 Search
             </button>
             <a href="{% url 'home' %}" class="button secondary text-center">Clear</a> 
         </form>
+<div id="articles-results">
     {% if articles %} 
     <ul>
         {% for article in articles %}
@@ -48,5 +57,6 @@
     {% else %}
         <p>No articles yet</p>
     {% endif %}
+</div>
 </main>
 {% endblock base_content %}

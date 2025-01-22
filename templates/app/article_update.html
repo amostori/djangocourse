@@ -18,7 +18,7 @@
     <div id="modal" class="relative z-10 hidden">
         <div class="bg-black/15 fixed inset-0"></div>
         <div class="fixed inset-0 z-10 w-screen p-4">
-            <div id="dialog" class="max-w-lg mx-auto bg-white rounded-md shadow-lg p-16">
+            <div id="dialog" class="max-w-lg mx-auto bg-white rounded-md shadow-lg p-16"></div>
         </div>
     </div>
 {% endblock extra_body %}
@@ -27,10 +27,11 @@
 {{ block.super }}
 <script type="application/javascript">
     const modal = document.getElementById("modal");
-    hmtx.on("htmx:afterSwap",    function(e)  {
+    htmx.on("htmx:afterSwap",    function(e)  {
         if(e.detail.target.id == "dialog") {
-            modal.classList.remove("hidden");
+            modal.classList.toggle("hidden");
         }
     })
 </script>
+
 {% endblock page_js %}

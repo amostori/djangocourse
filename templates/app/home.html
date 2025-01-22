@@ -21,9 +21,14 @@
             value="{{ request.GET.search }}" class="text-black shadow-sm focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm border-gray-300 rounded-md"
             hx-get="{% url 'home' %}" hx-trigger="input changed delay:500ms, search"
             hx-target="#articles-results"
-            hx-select="#articles-results">
-            <button type="submit" class="flex gap-1 button secondary items-center justify-center">
-                {% include "svgs/magnifier.svg" with class="w-6 h-6 mr-2" %}
+            hx-select="#articles-results"
+            hx-indicator="svg.loading"
+            hx-disabled-elt="next button"
+            hx-push-url="true">
+            <button type="submit" 
+            class="flex gap-1 button secondary items-center justify-center [&>.loading.htmx-request.hidden]:!inline-block [&>.loading.htmx-request]:hidden disabled:cursor-not-allowed disabled:opacity-50">
+                {% include "svgs/magnifier.svg" with class="loading w-6 h-6 mr-2" %}
+                {% include "svgs/loading.svg" with class="loading w-6 h-6 mr-2 hidden motion-safe:animate-spin" %}
                 Search
             </button>
             <a href="{% url 'home' %}" class="button secondary text-center">Clear</a> 

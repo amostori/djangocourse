@@ -1593,10 +1593,6 @@ input[type="radio"]:focus {
   display: inline-block !important;
 }
 
-.\[\&\>\.loading\.htmx-request\.hidden\]\:hidden>.loading.htmx-request.hidden {
-  display: none;
-}
-
 .\[\&\>\.loading\.htmx-request\]\:hidden>.loading.htmx-request {
   display: none;
 }

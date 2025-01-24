@@ -309,3 +309,7 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/django,node
+
+mailgun_test.py
+.env.docker
+staticfiles/

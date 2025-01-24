@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from allauth.account.views import SignupView
+# 1. Development
+from  django.conf import settings
 
 urlpatterns = [
     path('articles/', include('app.urls')),
@@ -27,6 +29,10 @@ urlpatterns = [
     # aby przekierowac na strone glowna po wejsciu na domyslny url (localhost:8000)
     path('', SignupView.as_view(), name='account_signup'),
     path('accounts/signup/', RedirectView.as_view(url='/')),
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('__reload__/', include('django_browser_reload.urls')),
 ]
+# 2. Deployment
+if settings.DEBUG:
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+        path('__reload__/', include('django_browser_reload.urls')),
+    ]   

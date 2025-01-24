@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 
+# 2. Deployment
+ENV_STATE = os.getenv('ENV_STATE')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +24,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-57_d$x)r-41c@f^^hsse8u0%#o0h8be3ve)p^f%j$p-@@_er0f'
+# 5. Deployment
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# 1. Deployment
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+# 6. Deployment
+ALLOWED_HOSTS = ['*']
+
+# 3. Deployment
+if ENV_STATE == 'production':
+    # ALLOWED_HOSTS = ['*']
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+# 4. Deployment
+ADMIN_URL = os.getenv('ADMIN_URL', 'admin')
 
 AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -51,8 +66,9 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-    'django_browser_reload',
     'widget_tweaks',
+    'anymail',
+    'whitenoise.runserver_nostatic',
 ]
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -67,6 +83,8 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # whitenoise musi byc dokladnie tu
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,12 +92,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
+    
 ]
 if DEBUG:
-    INSTALLED_APPS += ['debug_toolbar', ]
+    INSTALLED_APPS += ['debug_toolbar',
+                       'django_browser_reload', ]
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'django_browser_reload.middleware.BrowserReloadMiddleware',
     ]
     import socket 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
@@ -141,6 +161,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL_ADRESS', 'NONE')
+ANYMAIL = {
+    'MAILGUN_API_KEY': os.environ.get('MAILGUN_API_KEY', 'NONE'),
+    'SEND_DEFAULTS': {'tags': ['djangocourse']}
+}
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+
+
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'account_login'
 
@@ -149,7 +178,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -169,9 +199,20 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# lokalizacja dla plikow statycznych
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGE = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    }
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

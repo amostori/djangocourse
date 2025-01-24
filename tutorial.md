@@ -249,3 +249,13 @@ mozna dodawac artykuly.
 # HTMX
 1. W pliku templates/base.html dodaj 
 `<script src="https://unpkg.com/htmx.org@2.0.3"></script>`
+
+# Deploying
+1. W settings.py dokonaj 6 zmian
+2. W .env.docker ustaw DEBUG na True i SECRET_KEY
+3. W djangocourse/urls.py zrob 2 zmiany.
+4. `poetry add gunicorn "whitenoise[brotli]"`
+5. W start-django.sh dokonaj zmian pozwalajacych na uruchomienie gunicorn
+6. Dodaj whitenoise middleware w settings.py i 'whitenoise.runserver_nostatic' w Third Party apps
+7. W settings.py dodaj lokalizacje dla plikow statycznych
+8. komenda `poetry run python manage.py collectstatic` utworzy folder staticfiles.

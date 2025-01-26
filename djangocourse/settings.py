@@ -41,7 +41,7 @@ if ENV_STATE == 'production':
     CSRF_COOKIE_SECURE = True
 
 # 4. Deployment
-DMIN_URL = os.getenv("ADMIN_URL", "admin")
+ADMIN_URL = os.getenv("ADMIN_URL", "admin")
 
 AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',

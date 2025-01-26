@@ -18,12 +18,12 @@ class Migration(migrations.Migration):
             return
         superuser= User.objects.create_superuser(username='admin', email='admin@localhost', password='admin', last_login=timezone.now())
         superuser.save()
-        email, created = EmailAddress.objects.get_or_create(
-            user=superuser,
-            email=user_email(superuser)
-        )
-        email.verified = True
-        email.save()
+        # email, created = EmailAddress.objects.get_or_create(
+        #     user=superuser,
+        #     email=user_email(superuser)
+        # )
+        # email.verified = True
+        # email.save()
 
     operations = [
         migrations.RunPython(create_superuser),

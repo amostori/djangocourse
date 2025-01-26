@@ -26,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
         # None to title dla pola
         (None, {
             'classes': ('wide',), # chodzi o klasy CSS
-            'fields': ('email', 'password1'),
+            'fields': ('email', 'password1', 'password2'),
         }),
     )
     list_display = ('email', 'is_staff', 'is_active',)

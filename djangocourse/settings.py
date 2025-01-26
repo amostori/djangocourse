@@ -67,7 +67,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     'widget_tweaks',
-    'anymail',
     'whitenoise.runserver_nostatic',
 ]
 SOCIALACCOUNT_PROVIDERS = {
@@ -162,12 +161,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL_ADRESS', 'NONE')
-ANYMAIL = {
-    'MAILGUN_API_KEY': os.environ.get('MAILGUN_API_KEY', 'NONE'),
-    'SEND_DEFAULTS': {'tags': ['djangocourse']}
-}
-EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
 
 LOGIN_REDIRECT_URL = 'home'
@@ -178,8 +171,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_EMAIL_VERIFICATION = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

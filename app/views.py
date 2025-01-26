@@ -1,6 +1,6 @@
 from typing import Any
 import time
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from app.models import Article
 from django.contrib.messages.views import SuccessMessageMixin
 from app.forms import CreateArticleForm
@@ -14,6 +14,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 #     # objects to manager do zapytan do bazy danych
 #     return render(request, 'app/home.html', {'articles': articles})
 #     # 'articles' - pod taka nazwa bedzie dostepna w html
+
+def article_view(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    return render(request, 'app/article_view.html', {'article': article})
 
 # Function base view
 # def create_article(request):
@@ -55,7 +59,7 @@ class ArticleListView(LoginRequiredMixin, ListView):
 class CreateArticleView(LoginRequiredMixin, CreateView):
     template_name = 'app/article_create.html'
     model = Article
-    fields = ('title', 'status', 'content', 'twitter_post')
+    fields = ('title',  'content',)
     success_url = reverse_lazy('home')
     # wbudowana funkcja form_valid to validacja danych
     def form_valid(self, form):
@@ -63,10 +67,12 @@ class CreateArticleView(LoginRequiredMixin, CreateView):
         # form.instance to inaczej obiekt artykulu
         return super().form_valid(form)
     # success_url - sciezka do ktorej zostanie przekierowany po zapisaniu artykulu
+
+
 class ArticleUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     template_name = 'app/article_update.html'
     model = Article
-    fields = ('title', 'status', 'content', 'twitter_post')
+    fields = ('title','content', )
     success_url = reverse_lazy('home')
     context_object_name = 'article'
     def test_func(self):

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load blog_extras %}
+{% load humanize %}
+{% block head_title %}
+- Your articles
+{% endblock %}
+{% block base_content %}
+<main class="max-w-7xl mx-auto mt-10 p-2 md:p-4 lg:p-10">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content | markdownify|safe}}</p>
+</main>
+{% endblock base_content %}

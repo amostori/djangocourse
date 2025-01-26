@@ -5,12 +5,11 @@ from django.contrib.auth.admin import UserAdmin
 
 # aby sprecyzowac co i jak ma byc wyswietlane w panelu admina stworz klase
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'status', 'created_at', 'updated_at')
-    list_filter = ('status',)
+    list_display = ('title', 'created_at', )
     search_fields = ('title', 'content', )
     date_hierarchy = 'created_at'
     ordering = ('created_at',)
-    readonly_fields = ('word_count','created_at', 'updated_at') 
+    readonly_fields = ('word_count','created_at') 
 
 
 class CustomUserAdmin(UserAdmin):

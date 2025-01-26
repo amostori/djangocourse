@@ -16,15 +16,14 @@
   </head>
   <body>
    {% block body %}
-     {% url 'create_article' as create_new_url %}
+     {% url 'article_create' as create_new_url %}
      {% url 'home' as your_articles_url %}
      {% url 'account_email' as change_email_url %}
      <nav class="px-10 py-4 border-b border-gray-300 shadow-md">
        <div class="flex justify-end items-center gap-6 max-w-7xl mx-auto">
            {% if user.is_authenticated %}
-             <a
-               class="button primary"
-               href="{% spaceless %}{% if request.path != create_new_url %} {{ create_new_url }} {% else %} # {% endif %}{% endspaceless %}">
+             <a class="button primary" 
+              href="{% spaceless %}{% if request.path != create_new_url %} {{ create_new_url }} {% else %} # {% endif %}{% endspaceless %}">
                Create new
              </a>
              <a

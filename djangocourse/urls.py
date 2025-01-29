@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from allauth.account.views import SignupView
-# 1. Development
+# 1. Deployment
 from  django.conf import settings
 
 urlpatterns = [

@@ -18,6 +18,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 def article_view(request, pk):
     article = get_object_or_404(Article, pk=pk)
     return render(request, 'app/article_view.html', {'article': article})
+def html5_view(request):
+    articles = Article.objects.all()
+    return render(request, 'app/index.html', {'articles': articles})
 
 # Function base view
 # def create_article(request):

@@ -2,10 +2,10 @@
 {% load humanize %}
 {% block head_title %}
 - Your articles
-{% endblock %}
+{% endblock head_title %}
 {% block base_content %}
 <main class="max-w-7xl mx-auto mt-10 p-2 md:p-4 lg:p-10">
-    <H1 class="title mb-4">Welcome</H1>
+    <H1 class="title mb-4"><a href="{% url 'html5_view' %}">Welcome</a></H1>
     <button hx-post="/clicked" hx-swap="outerHTML">
         Click Me
       </button>
